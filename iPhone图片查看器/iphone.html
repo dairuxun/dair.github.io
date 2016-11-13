@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>iPhone手机图片查看器 - 智能课堂 - www.zhinengshe.com</title>
+<link href="style.css" rel="stylesheet" type="text/css" />
+<script src="doMove.js"></script>
+<script>
+window.onload=function(){
+    var oUl = document.getElementById('ul1');
+    var aLi = oUl.getElementsByTagName('li');
+    var n_Lw = aLi[0].offsetWidth;
+    var index = 0;
+    oUl.onmousedown = function(ev){
+        var oEv = ev || event;
+        var x1 = oEv.clientX;
+        var oUl_left = oUl.offsetLeft;
+        document.onmousemove = function(ev){
+            var oEv = ev || event;
+            var dis1 = oEv.clientX - x1;
+            oUl.style.left = oUl_left + dis1 + 'px';
+        };
+        document.onmouseup = function(ev){
+            document.onmousemove = null;
+            document.onmouseup = null;
+            var oEv = ev || event;
+            var dis = Math.abs(oEv.clientX-x1);
+            var upX = oEv.clientX;
+            if(dis>40){
+                if(upX>x1){
+                    index -=1;
+                    if(index == -1){
+                        index = 0;
+                    }
+                    doMove(oUl,{left:(-n_Lw * (index))});
+                }else{
+                    index +=1;
+                    if(index == aLi.length){
+                        index = aLi.length -1;
+                    }
+                    doMove(oUl,{left:(-n_Lw * (index))});
+                }
+            }else{
+                doMove(oUl,{left:(-n_Lw * index)});
+            }
+        };
+        return false
+    }
+};
+</script>
+</head>
+
+<body>
+
+<div id="iphone">
+	<div id="wrap">
+		<ul id="ul1">
+			<li style="background:url(images/pic1.png);" title="智能课堂"></li>
+			<li style="background:url(images/pic2.png);" title="智能课堂"></li>
+			<li style="background:url(images/pic3.png);" title="智能课堂"></li>
+			<li style="background:url(images/pic4.png);" title="智能课堂"></li>
+		</ul>
+	</div>
+</div>
+
+</body>
+</html>

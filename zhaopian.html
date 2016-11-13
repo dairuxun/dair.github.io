@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .warp{
+            width: 1000px;
+            margin: auto;
+            position: relative;
+        }
+        .warp li{
+            float: left;
+            width: 300px;
+            margin: 5px;
+            height: 300px;
+            background: red;
+            text-align: center;
+            line-height: 290px;
+            color: #fff;
+            font-size: 20px;
+            border:solid 2px #000;
+        }
+        .warp li.ba{
+            border:dashed 2px red;
+        }
+        .warp li img{
+            width: 100%;
+            height: 100%;
+        }
+        a{
+            padding: 10px;
+            border:none;
+            display: block;
+            width: 140px;
+            text-align: center;
+            text-decoration:none;
+            margin: 10px auto;
+            background: red;
+            color: #fff;
+            border-radius: 10px;
+            transition: 1s;
+        }
+        a:hover{
+            transform: rotateY(360deg);
+        }
+    </style>
+    <script src="js/startMove.js"></script>
+    <script>
+        function $(id){
+            return document.getElementById(id);
+        }
+       function fnDrag(obj,aLi,arr){
+           obj.onmousedown = function(ev){
+               var oEv = ev || event;
+               var disX = oEv.clientX - obj.offsetLeft;
+               var disY = oEv.clientY - obj.offsetTop;
+               var newLi = null;
+               document.onmousemove = function(ev){
+                   var oEv = ev || event;
+                   var l = oEv.clientX - disX;
+                   var t = oEv.clientY - disY;
+                   obj.style.left = l+'px';
+                   obj.style.top = t+'px';
+                   obj.style.zIndex = 999;
+                   newLi = fnComp(obj,aLi);
+                   for(var i=0;i<aLi.length;i++){
+                       aLi[i].className = '';
+                   }
+                   if(newLi){
+                       newLi.className='ba';
+                   }
+               };
+               document.onmouseup = function(){
+                   document.onmousemove = null;
+                   document.onmouseup = null;
+                   if(newLi){
+                       move(obj,{top:arr[newLi.index].top,left:arr[newLi.index].left});
+                       move(newLi,{top:arr[obj.index].top,left:arr[obj.index].left});
+                       var tmp;
+                       tmp = obj.index;
+                       obj.index = newLi.index;
+                       newLi.index = tmp;
+                       newLi.className = '';
+                   }else{
+                       move(obj,{top:arr[obj.index].top,left:arr[obj.index].left});
+                   }
+               };
+               return false
+           }
+       }
+        function fnmeet(obj,obj1){
+            var l = obj.offsetLeft;
+            var r = obj.offsetLeft + obj.offsetWidth;
+            var t = obj.offsetTop;
+            var b = obj.offsetTop + obj.offsetHeight;
+
+            var l1 = obj1.offsetLeft;
+            var r1 = obj1.offsetLeft + obj1.offsetWidth;
+            var t1 = obj1.offsetTop;
+            var b1 = obj1.offsetTop + obj1.offsetHeight;
+            if(l<r1 && r>l1 && t<b1 && b>t1){
+                return true;
+            }else{
+                return false;
+            }
+        }
+        function fnDis(obj,obj1){
+            var a = obj1.offsetLeft - obj.offsetLeft;
+            var b = obj1.offsetTop - obj.offsetTop;
+            return Math.sqrt(a*a + b*b);
+        };
+        function fnComp(obj,aLi){
+            var min = 9999999;
+            var minIndex = -1;
+            for(var i=0;i<aLi.length;i++){
+                if(obj==aLi[i]) continue;
+                aLi[i].style.zIndex = i;
+                if(fnmeet(obj,aLi[i])){
+                    if(fnDis(obj,aLi[i])<min){
+                        min = fnDis(obj,aLi[i]);
+                        minIndex = i;
+                    }
+                }
+            }
+            if(minIndex == -1){
+                return null;
+            }else{
+                return aLi[minIndex];
+            }
+        }
+        window.onload = function(){
+            var aLi= $('ul').getElementsByTagName('li');
+            var arr = [];
+            for(var i=0;i<aLi.length;i++){
+                arr.push({left:aLi[i].offsetLeft,top:aLi[i].offsetTop});
+            }
+            for(var i=0;i<arr.length;i++){
+                aLi[i].style.left = arr[i].left + 'px';
+                aLi[i].style.top = arr[i].top + 'px';
+                aLi[i].style.margin = 0;
+                aLi[i].style.position = "absolute";
+                aLi[i].index = i;
+                fnDrag(aLi[i],aLi,arr);
+            };
+        }
+    </script>
+</head>
+<body>
+<a href="javascript:;">拖动方块换位置</a>
+<div class="warp">
+    <ul id="ul">
+        <li>
+            <img src="img/img/1.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/2.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/3.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/4.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/8.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/6.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/10.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/11.jpg" alt=""/>
+        </li>
+        <li>
+            <img src="img/img/12.jpg" alt=""/>
+        </li>
+    </ul>
+</div>
+</body>
+</html>

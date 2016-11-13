@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style>
+        *{ margin:0; padding:0; list-style:none;}
+        .warp{
+            width: 700px;
+            height: 400px;
+            margin: 100px auto;
+            position: relative;
+        }
+        .div3D{
+            width: 100%;
+            height: 100px;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transform-style:preserve-3d;
+            transform:perspective(800px) rotateY(0deg);
+        }
+        .div3D div{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .top{
+            background-image: url(img/000.jpg);
+            background-position: 0px 0px;
+            transform:scale3d(0.7, 0.7, 0.7) translateZ(350px);
+        }
+        .left{
+            transform:scale3d(0.7, 0.7, 0.7) rotateY(-90deg) translateZ(350px);
+        }
+        .right{
+            background-image: url(img/001.jpg);
+            background-position: 0px 0px;
+            transform:scale3d(0.7, 0.7, 0.7) rotateY(-90deg) translateZ(-350px);
+        }
+        .bottom{
+            transform:scale3d(0.7, 0.7, 0.7) rotateY(180deg) translateZ(350px);
+        }
+        input{
+            display: block;
+            margin: 30px auto 0;
+            border:none;
+            padding:12px 15px;
+            color:#fff;
+            background: #00bcd4;
+            border-radius: 4px;
+        }
+    </style>
+    <script>
+        window.onload = function(){
+            var oWarp = document.getElementById('box');
+            var oBtn = document.getElementById('btn');
+            var arr= ['top','left','bottom','right'];
+            var num =0;
+            var iNo = 1;
+            var kg = true;
+            for(var i=0;i<4;i++){
+                var oDiv = document.createElement('div');
+                for(var j=0;j<4;j++){
+                    var odiv = document.createElement('div');
+                    odiv.style.backgroundPosition = '0px '+ (-i*100) +'px';
+                    odiv.className = arr[j];
+                    oDiv.appendChild(odiv);
+                }
+                oDiv.className = 'div3D';
+                oDiv.style.top = i * 100 + 'px';
+                oWarp.appendChild(oDiv);
+            }
+            var aDiv = document.querySelectorAll('.div3D');
+            oBtn.onclick = function(){
+                if(!kg){return false}
+                kg = false;
+                num ++;
+                for(var i=0;i<aDiv.length;i++){
+                    aDiv[i].style.transition = '.5s all ease ' + (i) *200 + 'ms';
+                    (function(i){
+                        setTimeout(function(){
+                            aDiv[i].style.transform = 'perspective(800px) rotateY(-'+(num * 90)+'deg)';
+                        },30);
+                    })(i);
+                }
+            };
+             console.log(aDiv[aDiv.length-1])
+            aDiv[aDiv.length-1].addEventListener('transitionend',function(){
+                iNo++;
+                var aTop = document.querySelectorAll('.top');
+                var aRight = document.querySelectorAll('.right');
+                var aBottom = document.querySelectorAll('.bottom');
+                var aLeft = document.querySelectorAll('.left');
+                var arr1 = [aTop,aRight,aBottom,aLeft];
+
+                for(var i=0;i<aTop.length;i++){
+                    arr1[(num+1)%4][i].style.backgroundImage = 'url(img/00'+iNo%3+'.jpg)';
+                }
+                kg = true;
+            },false);
+        }
+    </script>
+    </head>
+
+<body>
+<input type="button" value="走一个" id="btn"/>
+<div id="box" class="warp">
+</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>球</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        #div{
+            width: 260px;
+            height: 182px;
+            background: url(img/qiu.png) no-repeat;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        #div p{
+            position: absolute;
+            right: 0;
+            color: red;
+            top:-14%;
+            font-size: 26px;
+            display: none;
+            animation: 1s yd infinite ease;
+        }
+        @keyframes yd {
+            to{
+                opacity: 0;
+            }
+            from{
+                opacity: 1;
+            }
+        }
+    </style>
+    <script src="js/move.js"></script>
+</head>
+<body>
+<div id="div">
+    <p id="p">来扔我啊！！！！</p>
+</div>
+</body>
+</html>

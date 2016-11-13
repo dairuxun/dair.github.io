@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>三维图片轮换</title>
+<link href="zns_style.css" rel="stylesheet" type="text/css" />
+<script src="move.js"></script>
+<script src="doMove.js"></script>
+    <script>
+        function getStyle(obj,name){
+            return (obj.currentStyle || getComputedStyle(obj,false))[name];
+        }
+        window.onload = function(){
+            var oUl = document.getElementById('znsRotatePic');
+            var arr = [];
+            var oBtn = document.getElementById('btn1');
+            var oBtn1 = document.getElementById('btn2');
+            var aLi = oUl.getElementsByTagName('li');
+            var aImg = oUl.getElementsByTagName('img');
+            for(var i=0;i<aLi.length;i++){
+                arr.push({
+                    left:aLi[i].offsetLeft,
+                    top:aLi[i].offsetTop,
+                    opacity:getStyle(aImg[i],'opacity'),
+                    width:getStyle(aImg[i],'width'),
+                    imgT:getStyle(aImg[i],'top')
+                });
+            }
+            oBtn.onclick = function(){
+                arr.push(arr.shift());
+                fnMove();
+            };
+            oBtn1.onclick = function(){
+                arr.unshift(arr.pop());
+                fnMove();
+            };
+            function fnMove(){
+                for(var i=0;i<aLi.length;i++){
+                    doMove(aLi[i],{left:arr[i].left,top:arr[i].top});
+                    doMove(aImg[i],{
+                        opacity:arr[i].opacity,
+                        width:parseInt(arr[i].width),
+                        top:parseInt(arr[i].imgT)
+                    });
+                }
+            }
+        }
+    </script>
+</head>
+
+<body>
+<p style="padding: 10px ;text-align: center">
+    <input type="button" value="往右面走" id="btn1" />
+    <input type="button" value="往左面走" id="btn2" />
+</p>
+<ul id="znsRotatePic">
+	<li class="pic1">
+		<a href="javascript:;"><img src="images/pic1.gif" alt="pic1" class="unactive" longdesc="http://www.zns.com" width="187px" /></a><!-- 208 -->
+		<span></span>
+	</li>
+	<li class="pic2">
+		<a href="javascript:;"><img src="images/pic2.gif" alt="pic2" longdesc="http://www.zns.com" width="208" /></a>
+		<span></span>
+	</li>
+	<li class="pic3">
+		<a href="javascript:;"><img src="images/pic3.gif" alt="pic3" class="unactive" longdesc="http://www.zns.com" width="187" /></a>
+		<span></span>
+	</li>
+</ul>
+
+</body>
+</html>
