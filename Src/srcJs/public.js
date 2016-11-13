@@ -64,6 +64,7 @@ window.onload = function(){
     function photo(){
         var oDiv = $('photo');
         var ow = document.documentElement.clientWidth;
+        
         var l=0;
         var t=0;
         var send = 0;
@@ -71,6 +72,7 @@ window.onload = function(){
         var time = null;
         time = setInterval(function(){
             send -= (l-(ow/4))/20;
+           
             send *=.8;
             l+=send;
             oDiv.style.left = l+'px';
@@ -104,15 +106,8 @@ window.onload = function(){
     }
     function fnAudio(){
         var apple = false;
-        $('apply').style.transform='rotateZ(0deg)';
-        setTimeout(function(){
-            $('show').style.display='block';
-        },500);
-        $('audio').play();
-        $('div').className = 'yinyue';
-        $('apply').onclick = function(){
+        $('photo').onclick = function(){
             var rotate = getStyle($('div'),'transform');
-            console.log(rotate);
             if(apple){
                 $('audio').play();
                 $('div').style.transform = rotate;
@@ -187,7 +182,7 @@ window.onload = function(){
      
     function fnjn(){
         var aLi = $('jn_ul').getElementsByTagName('li');
-        console.log(aLi)
+      
         doMove(aLi[2],{left:800},{end:function(){
             doMove(aLi[1],{left:420},{end:function(){
                 doMove(aLi[0],{left:30})
