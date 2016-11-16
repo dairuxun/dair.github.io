@@ -78,11 +78,13 @@ window.onload = function(){
             oDiv.style.left = l+'px';
             if(l==(ow/4)){
                 clearInterval(time);
+                
                 fnAudio();
             }
         },1000/60)
     }
     photo();
+    Yinyu()
     //移动
     function findDir(oDiv,ev){
         var oEvent=ev||event;
@@ -103,10 +105,28 @@ window.onload = function(){
             obj=obj.offsetParent;
         }
         return {left:l,top:t};
+    };
+    
+    function Yinyu(){
+    	$('box_1').onmouseover=function(){
+    			 // var rotate = getStyle($('div'),'transform');
+    			 $('audio').play();
+                // $('div').style.transform = rotate;
+                $('div').className = 'yinyue';
+                $('apply').style.transform='rotate(0deg)';
+                setTimeout(function(){
+                    $('show').style.display='block';
+                },500);
+                $('box_1').style.display='none'
+                
+
+    	}
     }
     function fnAudio(){
+
         var apple = false;
         $('photo').onclick = function(){
+        	
             var rotate = getStyle($('div'),'transform');
             if(apple){
                 $('audio').play();
